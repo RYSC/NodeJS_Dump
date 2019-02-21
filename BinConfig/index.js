@@ -7,11 +7,9 @@ var request = require('request');
 var handle = {};
 handle["/"] = requestHandler.start;
 handle["/start"] = requestHandler.start;
-handle["/upload"] = requestHandler.upload;
-handle["/test"] = requestHandler.test;
-handle["/updateConfig"] = requestHandler.updateConfig;
-handle["/receive"] = requestHandler.receive;
+handle["/updateBinInfo"] = requestHandler.updateBinInfo;
+handle["/uploadToDB"] = requestHandler.uploadToDB;
 
 server.start(router.route, handle);
 
-//Test2
+

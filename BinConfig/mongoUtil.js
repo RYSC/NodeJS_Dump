@@ -50,15 +50,26 @@ module.exports = {
             ConnectedDB.close();
         });
     },
+    
+    getBinInfo: function(formObject) {
+        var query = {DeviceID: formObject.DeviceID};
+        CanaryDB.collection('BinConfigInfo').find(query).toArray(function(err, result) {
+            if (err) throw err;
+            ConnectedDB.close();
+            return(result);
+        });
+    },
 
-    checkBinExists: function(formObject) {
+    cBinExists: function(formObject) {
         var query = {DeviceID: formObject.DeviceID};
         CanaryDB.collection('BinConfigInfo').find(query).count(function(error, count){
+            if (error) throw err;
             console.log("the count is: " + count);
+            ConnectedDB.close();
             if (count == 0)
-                console.log("The device is not documented");
+                return false;
             else
-                console.log("The device is in the DB");
+                return true;
         });       
     },
 

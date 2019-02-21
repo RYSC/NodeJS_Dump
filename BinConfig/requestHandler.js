@@ -1,10 +1,9 @@
 var querystring = require("querystring");
-//var express = require('express');
-//var bodyParser = require('body-parser');
-
 var mongoUtil = require("./mongoUtil");
 
-
+//---------------------------------------------------------------------
+//                         TUTORIAL FUNCTIONS
+//---------------------------------------------------------------------
 function start(response, postData) {
     console.log("request handler 'start' was called.");
     
@@ -14,10 +13,7 @@ function start(response, postData) {
         'charset=UTF-8" />'+
         '</head>'+
         '<body>'+
-        '<form action="/upload" method="post">'+
-        '<textarea name="text" rows="20" cols="60"></textarea>'+
-        '<input type="submit" value="Submit text" />'+
-        '</form>'+
+        'Welcome to the server start page' +
         '</body>'+
         '</html>';
 
@@ -27,39 +23,43 @@ function start(response, postData) {
     
 }
 
-function upload(response, postData) {
-    console.log("Request handler 'upload' was called.");
-    response.writeHead(200, {"Content-Type": "text/plain"});
-    response.write("You've sent: " + 
-    querystring.parse(postData).text);
-    response.end();
+//---------------------------------------------------------------------
+//                         ADD TO OBJECT
+//       Desc: Adds data pair to object
+//---------------------------------------------------------------------
+function addToObject(object, pairName, value, isNum){
+    // Only add value to object if the value is not empty
+    if (value !== null && value !== ''){
+        if (isNum)
+            object[pairName] = Number(value);  //Change string to number for applicable fields
+        else
+            object[pairName] = value
+    }
 }
 
-function test(response, postData){
-    console.log("Request handler 'test' was called.");
-    response.writeHead(200, {"Content-Type": "text/plain"});
-    response.write("Testing Testing");
-    response.end();
-}
-
-function updateConfig(response, postData) {
+//---------------------------------------------------------------------
+//                         UPDATE CONFIG
+//       Desc: Shows form on server, takes bin information
+//---------------------------------------------------------------------
+function updateBinInfo(response, postData) {
     console.log("request handler 'updateConfig' was called.");
     
+    // Construct an html form
     var body = '<html>'+
         '<head>'+
         '<meta http-equiv="Content-Type" content="text/html; '+
         'charset=UTF-8" />'+
         '</head>'+
         '<body>'+
-        '<form action="/receive" method="post">'+
-        'DeviceID:<br>'+
-        '<input type="text" name="inpDeviceID"><br>'+
-        'Bin Depth:<br>'+
-        '<input type="number" name="inpBinDepth"><br>'+
+        '<form action="/uploadToDB" method="post">'+
+        'DeviceID:<br>'+                                    
+        '<input type="text" name="inpDeviceID"><br>'+           // DeviceID Input
+        'Bin Depth:<br>'+                                   
+        '<input type="number" name="inpBinDepth"><br>'+         // Bin Depth Input
         'Temperature Limit:<br>'+
-        '<input type="number" name="inpTeLimit"><br>'+
+        '<input type="number" name="inpTeLimit"><br>'+          // Temp Limit Input
         'Bin Level Limit:<br>'+
-        '<input type="number" name="inpLeLimit"><br><br>'+
+        '<input type="number" name="inpLeLimit"><br><br>'+      // Bin Level Input
         '<input type="submit" value="Submit Info" />'+
         '</form>'+
         '</body>'+
@@ -71,48 +71,47 @@ function updateConfig(response, postData) {
     
 }
 
-function addToObject(object, pairName, value, isNum){
-    if (value !== null && value !== ''){
-        if (isNum)
-            object[pairName] = Number(value);
-        else
-        object[pairName] = value
-    }
-}
+//---------------------------------------------------------------------
+//                         UPDATE CONFIG
+//       Desc: Shows form on server, takes bin information
+//---------------------------------------------------------------------
 
-function receive(response, postData) {
-    console.log("Request handler 'receive' was called.");
+function uploadToDB(response, postData) {
+    console.log("Request handler 'uploadToDB' was called.");
     response.writeHead(200, {"Content-Type": "text/plain"});
     response.write("You've sent: " + postData);
 
-    //Making an object from the form (probably not the best way to do this)
-    // var formObject = {
-    //     DeviceID: querystring.parse(postData).inpDeviceID,
-    //     BinDepth: querystring.parse(postData).inpBinDepth,
-    //     TempLim: querystring.parse(postData).inpTeLimit,
-    //     LevLim: querystring.parse(postData).inpLeLimit
-    // }
-
+    // Construct an object out of the inputs to the html form
     var formObject = new Object();
     addToObject(formObject, "DeviceID", querystring.parse(postData).inpDeviceID, false);
     addToObject(formObject, "BinDepth", querystring.parse(postData).inpBinDepth, true);
     addToObject(formObject, "TempLim", querystring.parse(postData).inpTeLimit, true);
     addToObject(formObject, "LevLim", querystring.parse(postData).inpLeLimit, true);
 
-    console.log("This is the form object: " + JSON.stringify(formObject));
-    // Connect to the Mongo database
+
+
+    // Update BinConfig collection in mongoDB Database
     mongoUtil.connectToServer( function(err) {
+
+
+        // if (mongoUtil.cBinExists(formObject)){
+        //     response.write("Bin: " + formObject.DeviceID + " has been updated");
+        //     response.write("Original Bin Config:")
+        //     //response.write(mongoUtil.getBinInfo(formObject));
+        // }
+        // else {
+        //     response.write("Bin: " + formObject.DeviceID + " has been added");
+        // }
+
+        mongoUtil.updateDocument(formObject);   // Update/insert Bin info from form
         
-        // Attempt to insert the object to the database
-        mongoUtil.updateDocument(formObject);
+        // response.write("Uploaded:");
+        // response.write(mongoUtil.getBinInfo(formObject));
     })
 
     response.end();
 }
 
 exports.start = start;
-exports.upload = upload;
-exports.test = test;
-exports.updateConfig = updateConfig;
-exports.receive = receive;
-//Test2
+exports.updateBinInfo = updateBinInfo;
+exports.uploadToDB = uploadToDB;

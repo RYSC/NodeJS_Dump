@@ -88,25 +88,9 @@ function uploadToDB(response, postData) {
     addToObject(formObject, "TempLim", querystring.parse(postData).inpTeLimit, true);
     addToObject(formObject, "LevLim", querystring.parse(postData).inpLeLimit, true);
 
-
-
     // Update BinConfig collection in mongoDB Database
     mongoUtil.connectToServer( function(err) {
-
-
-        // if (mongoUtil.cBinExists(formObject)){
-        //     response.write("Bin: " + formObject.DeviceID + " has been updated");
-        //     response.write("Original Bin Config:")
-        //     //response.write(mongoUtil.getBinInfo(formObject));
-        // }
-        // else {
-        //     response.write("Bin: " + formObject.DeviceID + " has been added");
-        // }
-
         mongoUtil.updateDocument(formObject);   // Update/insert Bin info from form
-        
-        // response.write("Uploaded:");
-        // response.write(mongoUtil.getBinInfo(formObject));
     })
 
     response.end();

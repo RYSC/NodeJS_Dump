@@ -90,7 +90,7 @@ function uploadToDB(response, postData) {
 
     // Update BinConfig collection in mongoDB Database
     mongoUtil.connectToServer( function(err) {
-        mongoUtil.updateDocument(formObject);   // Update/insert Bin info from form
+        mongoUtil.updateBinLimDocument(formObject);   // Update/insert Bin info from form
     })
 
     response.end();

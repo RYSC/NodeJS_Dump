@@ -21,6 +21,8 @@ var CanaryDB;
 
 
 module.exports = {
+    
+    // Connects to MongoDB server
     connectToServer: function(callback) {
         MongoClient.connect(MongoDB_url, {useNewUrlParser: true}, function(error, initialisedDatabase) {
             ConnectedDB = initialisedDatabase;
@@ -29,10 +31,13 @@ module.exports = {
             return callback(error);
         });
     },
+
+    // Returns database (connectToServer must be run first)
     getDb: function() {
         return CanaryDB;
     },
 
+    // Show on serial the Bin info of parsed Bin ID
     serialBinLimInfo: function(formObject) {
         var query = {DeviceID: formObject.DeviceID};
         CanaryDB.collection('BinConfigInfo').find(query).toArray(function(err, result) {
@@ -43,6 +48,7 @@ module.exports = {
         });
     },
     
+    // Gives Bin document for callback function, matching parsed bin ID
     getBinLimDocument: function func1 (pDeviceID, callback) {
         var query = {DeviceID: pDeviceID};
         MongoClient.connect(MongoDB_url, {useNewUrlParser: true}, function(err, initialisedDatabase) {
@@ -59,14 +65,15 @@ module.exports = {
         });
     },
 
+    // Inserts/Updates BinLim document in BinConfigInfo collection
     updateBinLimDocument: function(formObject) {
         var query = {DeviceID: formObject.DeviceID};
         CanaryDB.collection('BinConfigInfo').update(query, {$set: formObject} ,{upsert: true});   
     },
 
+    // Inserts Bin Alarm data to bin alarm collection
     insertAlarmData: function(binAlarmObject) {
         CanaryDB.collection('BinAlarmData').insertOne(binAlarmObject);
     },
 
 }
-//Test2

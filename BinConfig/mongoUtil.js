@@ -22,7 +22,7 @@ var CanaryDB;
 
 module.exports = {
     
-    // Connects to MongoDB
+    // Connects to MongoDB server
     connectToServer: function(callback) {
         MongoClient.connect(MongoDB_url, {useNewUrlParser: true}, function(error, initialisedDatabase) {
             ConnectedDB = initialisedDatabase;
@@ -31,20 +31,25 @@ module.exports = {
             return callback(error);
         });
     },
+
+    // Returns database (connectToServer must be run first)
     getDb: function() {
         return CanaryDB;
     },
 
+    // Returns BinConfig collection (connectToServer must be run first)
     getConfigCollection: function() {
         return CanaryDB.collection('BinConfigInfo')
     },
 
-    insertObject: function(formObject) {
+    // Insert bin info object into the bin config collection
+    insertBinLimInfo: function(formObject) {
         CanaryDB.collection('BinConfigInfo').insertOne(formObject);
     },
 
-    serialBinInfo: function(formObject) {
-        var query = {DeviceID: formObject.DeviceID};
+    // Show on serial the Bin info of parsed Bin ID 
+    serialBinLimInfo: function(pDeviceID) {
+        var query = {DeviceID: pDeviceID};
         CanaryDB.collection('BinConfigInfo').find(query).toArray(function(err, result) {
             if (err) throw err;
 
@@ -53,33 +58,41 @@ module.exports = {
         });
     },
     
-    getBinInfo: function(formObject) {
-        var query = {DeviceID: formObject.DeviceID};
-        CanaryDB.collection('BinConfigInfo').find(query).toArray(function(err, result) {
-            if (err) throw err;
-            ConnectedDB.close();
-            return(result);
-        });
-    },
-
-    cBinExists: function(formObject) {
-        var query = {DeviceID: formObject.DeviceID};
+    // Show on console whether bin info exists for given ID, 
+    cBinExists: function(pDeviceID) {
+        var query = {DeviceID: pDeviceID};
         CanaryDB.collection('BinConfigInfo').find(query).count(function(error, count){
             if (error) throw err;
             console.log("the count is: " + count);
             ConnectedDB.close();
             if (count == 0)
-                return false;
+                console.log("Bin: " + formObject.DeviceID + " is not documented");
             else
-                return true;
+                console.log("Bin: " + formObject.DeviceID + " is documented");
         });       
     },
 
-    // Updates Documents
-    updateDocument: function(formObject) {
+    // Gives Bin document for callback function, matching parsed bin ID
+    getBinLimDocument: function func1 (pDeviceID, callback) {
+        var query = {DeviceID: pDeviceID};
+        MongoClient.connect(MongoDB_url, {useNewUrlParser: true}, function(err, initialisedDatabase) {
+            if (err) {
+                return console.dir(err);
+            }
+            CanaryDB = initialisedDatabase.db(dbName);
+            var collection = CanaryDB.collection('BinConfigInfo');
+            collection.findOne(query).then(function(binDoc){
+                if(!binDoc)
+                    throw new Error('No record found.');
+                return callback(binDoc);
+            });
+        });
+    },
+
+    // Inserts/Updates BinLim document in BinConfigInfo collection
+    updateBinLimDocument: function(formObject) {
         var query = {DeviceID: formObject.DeviceID};
         CanaryDB.collection('BinConfigInfo').update(query, {$set: formObject} ,{upsert: true});   
     }
 
 }
-//Test2

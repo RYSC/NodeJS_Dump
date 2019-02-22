@@ -21,6 +21,8 @@ var CanaryDB;
 
 
 module.exports = {
+    
+    // Connects to MongoDB
     connectToServer: function(callback) {
         MongoClient.connect(MongoDB_url, {useNewUrlParser: true}, function(error, initialisedDatabase) {
             ConnectedDB = initialisedDatabase;
@@ -73,6 +75,7 @@ module.exports = {
         });       
     },
 
+    // Updates Documents
     updateDocument: function(formObject) {
         var query = {DeviceID: formObject.DeviceID};
         CanaryDB.collection('BinConfigInfo').update(query, {$set: formObject} ,{upsert: true});   

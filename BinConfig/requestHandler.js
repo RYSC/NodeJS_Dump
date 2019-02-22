@@ -38,7 +38,7 @@ function addToObject(object, pairName, value, isNum){
 }
 
 //---------------------------------------------------------------------
-//                         UPDATE CONFIG
+//                         UPDATE BIN INFO
 //       Desc: Shows form on server, takes bin information
 //---------------------------------------------------------------------
 function updateBinInfo(response, postData) {
@@ -72,8 +72,8 @@ function updateBinInfo(response, postData) {
 }
 
 //---------------------------------------------------------------------
-//                         UPDATE CONFIG
-//       Desc: Shows form on server, takes bin information
+//                         UPLOAD TO DB
+//       Desc: Takes bin info and uploads to MongoDB
 //---------------------------------------------------------------------
 
 function uploadToDB(response, postData) {

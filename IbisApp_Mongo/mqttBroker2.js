@@ -12,22 +12,6 @@ var fs = require('fs');
 var mongoUtil = require("./mongoUtil");
 
 
-// Read BinInfo from JSON file
-//var binInfoArray = JSON.parse(fs.readFileSync('BinLimits.json','utf8'));
-
-
-//-----------------------------------------------------------------------------
-//    Function to find bin from JSON object
-//-----------------------------------------------------------------------------
-
-function getObject(array, binID) {
-
-    for(var x in array){
-        if(array[x].DeviceID == binID) 
-            return array[x];
-    }
-}
-
 //-----------------------------------------------------------------------------
 // Connect to Topic
 //-----------------------------------------------------------------------------
@@ -59,6 +43,7 @@ client.on('message', function(topic, message){
     var datetime = new Date();
 
     var binInfo;
+    var alarmBinMsg;
 
     // Create an object for the packets to be added to.
 	var binPacket = {
@@ -100,9 +85,17 @@ client.on('message', function(topic, message){
         //Update Bin status
         binPacket["FireAlarm"] = binPacket.Temperature >= binInfo.TempLim;
         binPacket["FullAlarm"] = binPacket.BinLevel >= binInfo.LevLim;
-    
+        
+        // Compose alarm message
+
+        // client.on('connect', function(){
+        //     // Publish Bin alarms to MQTT
+        //     client.publish('Canary/Ibis/Alarm', "Bin Level:" + binPacket.binLevel);
+        // })
+        
+        
         console.log("BinLevel is: " + binPacket.BinLevel.toFixed(2) + "%");
-    
+        // Alarm actions
         if (binPacket.FullAlarm){
             console.log("[!] ALARM: BIN IS AT CAPACITY [!]");
         }

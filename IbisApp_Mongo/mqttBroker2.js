@@ -43,7 +43,7 @@ client.on('message', function(topic, message){
     var datetime = new Date();
 
     var binInfo;
-    var alarmBinMsg;
+    var alarmBinMsg = "";
 
     // Create an object for the packets to be added to.
 	var binPacket = {
@@ -86,23 +86,22 @@ client.on('message', function(topic, message){
         binPacket["FireAlarm"] = binPacket.Temperature >= binInfo.TempLim;
         binPacket["FullAlarm"] = binPacket.BinLevel >= binInfo.LevLim;
         
-        // Compose alarm message
-
-        // client.on('connect', function(){
-        //     // Publish Bin alarms to MQTT
-        //     client.publish('Canary/Ibis/Alarm', "Bin Level:" + binPacket.binLevel);
-        // })
-        
+      
         
         console.log("BinLevel is: " + binPacket.BinLevel.toFixed(2) + "%");
         // Alarm actions
         if (binPacket.FullAlarm){
             console.log("[!] ALARM: BIN IS AT CAPACITY [!]");
+            alarmBinMsg += "[!] BIN IS FULL [!]";
         }
     
         if (binPacket.FireAlarm){
             console.log("[!] ALARM: BIN IS ON FIRE [!]");
+            alarmBinMsg += "[!] FIRE ALERT [!]";
         }
+
+        client.publish('Canary/Ibis/Alarm', "Bin Level: " + binPacket.BinLevel.toFixed(2) + "% "+ alarmBinMsg);
+
     });
 
 });

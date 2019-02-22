@@ -76,7 +76,7 @@ client.on('message', function(topic, message){
     //------------------------------------------------------------------
 
     // Get bin limits from BinConfigDB and show alarms accordingly
-    mongoUtil.getBinDocument(binPacket.DeviceID, function(binInfo){
+    mongoUtil.getBinLimDocument(binPacket.DeviceID, function(binInfo){
 
         // Calculate bin fill level (from sensor distance and bin depth)
         if (binPacket.Distance < binInfo.BinDepth){
@@ -107,6 +107,9 @@ client.on('message', function(topic, message){
 
         // Publish bin alarms to ibis alarm topic
         client.publish('Canary/Ibis/Alarm', "Bin Level: " + binPacket.BinLevel.toFixed(2) + "% "+ alarmBinMsg);
+
+        // Send alarm data to bin alarm collection
+        mongoUtil.insertAlarmData(binPacket);
 
     });
 

@@ -33,15 +33,7 @@ module.exports = {
         return CanaryDB;
     },
 
-    getConfigCollection: function() {
-        return CanaryDB.collection('BinConfigInfo')
-    },
-
-    insertObject: function(formObject) {
-        CanaryDB.collection('BinConfigInfo').insertOne(formObject);
-    },
-
-    serialBinInfo: function(formObject) {
+    serialBinLimInfo: function(formObject) {
         var query = {DeviceID: formObject.DeviceID};
         CanaryDB.collection('BinConfigInfo').find(query).toArray(function(err, result) {
             if (err) throw err;
@@ -51,13 +43,14 @@ module.exports = {
         });
     },
     
-    getBinDocument: function func1 (pDeviceID, callback) {
+    getBinLimDocument: function func1 (pDeviceID, callback) {
         var query = {DeviceID: pDeviceID};
         MongoClient.connect(MongoDB_url, {useNewUrlParser: true}, function(err, initialisedDatabase) {
             if (err) {
                 return console.dir(err);
             }
-            var collection = initialisedDatabase.db(dbName).collection('BinConfigInfo');
+            CanaryDB = initialisedDatabase.db(dbName);
+            var collection = CanaryDB.collection('BinConfigInfo');
             collection.findOne(query).then(function(binDoc){
                 if(!binDoc)
                     throw new Error('No record found.');
@@ -66,23 +59,14 @@ module.exports = {
         });
     },
 
-    cBinExists: function(formObject) {
-        var query = {DeviceID: formObject.DeviceID};
-        CanaryDB.collection('BinConfigInfo').find(query).count(function(error, count){
-            if (error) throw err;
-            console.log("the count is: " + count);
-            ConnectedDB.close();
-            if (count == 0)
-                return false;
-            else
-                return true;
-        });       
-    },
-
-    updateDocument: function(formObject) {
+    updateBinLimDocument: function(formObject) {
         var query = {DeviceID: formObject.DeviceID};
         CanaryDB.collection('BinConfigInfo').update(query, {$set: formObject} ,{upsert: true});   
-    }
+    },
+
+    insertAlarmData: function(binAlarmObject) {
+        CanaryDB.collection('BinAlarmData').insertOne(binAlarmObject);
+    },
 
 }
 //Test2

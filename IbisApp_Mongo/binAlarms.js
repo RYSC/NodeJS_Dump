@@ -58,7 +58,7 @@ client.on('message', function(topic, message){
     for (var i = 2; i < parameterCount ; i++) {
         switch(selection[i-2]){
             case ("Di"):
-                binPacket["Distance"] = parameters[i];
+                binPacket["Distance"] = Number(parameters[i]);
                 break;
 
             case ("Hu"):
@@ -66,7 +66,7 @@ client.on('message', function(topic, message){
                 break;
                 
             case ("Te"):
-				binPacket["Temperature"] = parameters[i];
+				binPacket["Temperature"] = Number(parameters[i]);
 				break;
         }
     }

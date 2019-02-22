@@ -51,12 +51,18 @@ module.exports = {
         });
     },
     
-    getBinDocument: function(formObject) {
-        var query = {DeviceID: formObject.DeviceID};
-        CanaryDB.collection('BinConfigInfo').findOne(query).toArray(function(err, result) {
-            if (err) throw err;
-            ConnectedDB.close();
-            return(result);
+    getBinDocument: function func1 (pDeviceID, callback) {
+        var query = {DeviceID: pDeviceID};
+        MongoClient.connect(MongoDB_url, {useNewUrlParser: true}, function(err, initialisedDatabase) {
+            if (err) {
+                return console.dir(err);
+            }
+            var collection = initialisedDatabase.db(dbName).collection('BinConfigInfo');
+            collection.findOne(query).then(function(binDoc){
+                if(!binDoc)
+                    throw new Error('No record found.');
+                return callback(binDoc);
+            });
         });
     },
 

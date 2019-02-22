@@ -8,9 +8,12 @@ const mqtt = require('mqtt');
 var client = mqtt.connect('mqtt://infiniteattempts.summerstudio.xyz');
 var fs = require('fs');
 
+// MongoUtil module for connecting to Bin Config database
+var mongoUtil = require("./mongoUtil");
+
 
 // Read BinInfo from JSON file
-var binInfoArray = JSON.parse(fs.readFileSync('BinLimits.json','utf8'));
+//var binInfoArray = JSON.parse(fs.readFileSync('BinLimits.json','utf8'));
 
 
 //-----------------------------------------------------------------------------
@@ -45,7 +48,6 @@ client.on('connect', function () {
 //-----------------------------------------------------------------------------
 client.on('message', function(topic, message){
     //console.log("The message is:" + message);
-
     messageString = message.toString();
 
     // Count how many parameters there are
@@ -55,6 +57,8 @@ client.on('message', function(topic, message){
     var parameters = messageString.split(",");
     
     var datetime = new Date();
+
+    var binInfo;
 
     // Create an object for the packets to be added to.
 	var binPacket = {
@@ -82,30 +86,30 @@ client.on('message', function(topic, message){
         }
     }
 
-    // Get bin limits from JSON file
-    var binInfo = getObject(binInfoArray, binPacket.DeviceID);
+    // Get bin limits from BinConfigDB and show alarms accordingly
+    mongoUtil.getBinDocument(binPacket.DeviceID, function(binDoc){
+        binInfo = binDoc;
 
-    // Calculate bin level
-    if (binPacket.Distance < binInfo.BinDepth){
-        binPacket["BinLevel"] = (1 - binPacket.Distance / binInfo.BinDepth)*100;
-    }
-    else {
-        binPacket["BinLevel"] = 0;
-    }
-
-    //Update Bin status
-    binPacket["FireAlarm"] = binPacket.Temperature >= binInfo.TemperatureLimit;
-    binPacket["FullAlarm"] = binPacket.BinLevel >= binInfo.FullLimit;
-
-    console.log("BinLevel is: " + binPacket.BinLevel.toFixed(2) + "%");
-
-    if (binPacket.FullAlarm){
-        console.log("[!] ALARM: BIN IS AT CAPACITY [!]");
-    }
-
-
-    if (binPacket.FireAlarm){
-        console.log("[!] ALARM: BIN IS ON FIRE [!]");
-    }
+        if (binPacket.Distance < binInfo.BinDepth){
+            binPacket["BinLevel"] = (1 - binPacket.Distance / binInfo.BinDepth)*100;
+        }
+        else {
+            binPacket["BinLevel"] = 0;
+        }
+    
+        //Update Bin status
+        binPacket["FireAlarm"] = binPacket.Temperature >= binInfo.TempLim;
+        binPacket["FullAlarm"] = binPacket.BinLevel >= binInfo.LevLim;
+    
+        console.log("BinLevel is: " + binPacket.BinLevel.toFixed(2) + "%");
+    
+        if (binPacket.FullAlarm){
+            console.log("[!] ALARM: BIN IS AT CAPACITY [!]");
+        }
+    
+        if (binPacket.FireAlarm){
+            console.log("[!] ALARM: BIN IS ON FIRE [!]");
+        }
+    });
 
 });

@@ -71,10 +71,14 @@ client.on('message', function(topic, message){
         }
     }
 
-    // Get bin limits from BinConfigDB and show alarms accordingly
-    mongoUtil.getBinDocument(binPacket.DeviceID, function(binDoc){
-        binInfo = binDoc;
+    //------------------------------------------------------------------
+    //                      ORIG CODE: FOR RC BIN MONITOR
+    //------------------------------------------------------------------
 
+    // Get bin limits from BinConfigDB and show alarms accordingly
+    mongoUtil.getBinDocument(binPacket.DeviceID, function(binInfo){
+
+        // Calculate bin fill level (from sensor distance and bin depth)
         if (binPacket.Distance < binInfo.BinDepth){
             binPacket["BinLevel"] = (1 - binPacket.Distance / binInfo.BinDepth)*100;
         }
@@ -83,23 +87,25 @@ client.on('message', function(topic, message){
         }
     
         //Update Bin status
-        binPacket["FireAlarm"] = binPacket.Temperature >= binInfo.TempLim;
-        binPacket["FullAlarm"] = binPacket.BinLevel >= binInfo.LevLim;
-        
-      
-        
+        binPacket["FireAlarm"] = binPacket.Temperature >= binInfo.TempLim;  //True if sensor temp is greater than defined limit
+        binPacket["FullAlarm"] = binPacket.BinLevel >= binInfo.LevLim;      // True if bin level is greater than defined limit
+            
+        // Send bin level to console
         console.log("BinLevel is: " + binPacket.BinLevel.toFixed(2) + "%");
-        // Alarm actions
+        
+        // Alarm actions: Full bin
         if (binPacket.FullAlarm){
             console.log("[!] ALARM: BIN IS AT CAPACITY [!]");
             alarmBinMsg += "[!] BIN IS FULL [!]";
         }
     
+        // Alarm actions: Fire
         if (binPacket.FireAlarm){
             console.log("[!] ALARM: BIN IS ON FIRE [!]");
             alarmBinMsg += "[!] FIRE ALERT [!]";
         }
 
+        // Publish bin alarms to ibis alarm topic
         client.publish('Canary/Ibis/Alarm', "Bin Level: " + binPacket.BinLevel.toFixed(2) + "% "+ alarmBinMsg);
 
     });

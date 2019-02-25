@@ -42,7 +42,6 @@ client.on('message', function(topic, message){
     
     var datetime = new Date();
 
-    var binInfo;
     var alarmBinMsg = "";
 
     // Create an object for the packets to be added to.

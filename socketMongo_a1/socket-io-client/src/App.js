@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import socketIOClient from "socket.io-client";
+import './binPage.css'
+
 class App extends Component {
   constructor() {
     super();
@@ -17,14 +19,19 @@ class App extends Component {
   render() {
     const { response } = this.state;
     var binAlarm = this.state.response;
+    //var fullAlarm = binAlarm.FullAlarm;
 
     if (response) {
       return (
         <div style={{ textAlign: "center"}}>
           <h3> Bin level info</h3>
-          <p>The Bin Level is: {binAlarm.BinLevel} % </p>
-          <div class="alert"> 
-           
+          <div className = {binAlarm.FullAlarm ? "badBin" : "goodBin"}>
+            <p> Bin Level: <br/>
+            {binAlarm.BinLevel} % </p>
+          </div>
+          <div className = "DottedBox">
+            <p className="DottedBox_Content"> Bin Temp: <br/>
+            {binAlarm.Temperature} Degrees C</p>
           </div>
         </div>
       );

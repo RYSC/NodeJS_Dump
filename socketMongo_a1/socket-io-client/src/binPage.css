@@ -1,0 +1,23 @@
+.badBin {
+    text-align: center;
+    padding: 10px;
+    background-color: rgb(245, 69, 69);
+    color:white;
+}
+
+.goodBin{
+    text-align: center;
+    padding: 10px;
+    background-color: rgb(113, 238, 113);
+    color:white;
+}
+
+.DottedBox {
+    margin: 40px;
+    border: 5px dotted pink;
+}
+
+.DottedBox_Content {
+    font-size:15px;
+    text-align: centre;
+}

@@ -13,19 +13,32 @@ class App extends Component {
     const socket = socketIOClient(endpoint);
     socket.on("FromMongo", data => this.setState({ response: data }));
   }
+  
   render() {
     const { response } = this.state;
     var binAlarm = this.state.response;
-    return (
-      <div style={{ textAlign: "center" }}>
-        {response
-          ? <p>
-              The Bin Level is: {binAlarm.BinLevel} %
-              The Bin Temp is: {binAlarm.Temperature}
-            </p>
-          : <p>Loading...</p>}
-      </div>
-    );
+
+    if (response) {
+      return (
+        <div style={{ textAlign: "center"}}>
+          <h3> Bin level info</h3>
+          <p>The Bin Level is: {binAlarm.BinLevel} % </p>
+          <div class="alert"> 
+           
+          </div>
+        </div>
+      );
+    } 
+    
+    else {
+      return (
+        <div style={{ textAlign: "center" }}>
+          <p>Loading...</p>
+        </div>
+      )
+    }
   }
 }
+
+
 export default App;

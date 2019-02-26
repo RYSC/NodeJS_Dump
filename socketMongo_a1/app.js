@@ -5,6 +5,8 @@ const axios = require("axios");
 const port = process.env.PORT || 4001;
 const index = require("./routes/index");
 const app = express();
+var moment = require('moment');
+
 var mongoUtil = require("./mongoUtil");
 
 app.use(index);
@@ -15,6 +17,7 @@ const getAlarmAndEmit = async socket => {
   try {
     mongoUtil.getLatestAlarmDoc( function(binAlarm){
       binAlarm.BinLevel = binAlarm.BinLevel.toFixed(2);
+      binAlarm.Date = moment(binAlarm.Date).format("DD/MM/YYYY hh:mm:ss");
       socket.emit("FromMongo", binAlarm);
       console.log("Emitting latest BinAlarm from mongo. BinLevel: "+binAlarm.BinLevel);
     });

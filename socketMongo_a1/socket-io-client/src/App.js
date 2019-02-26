@@ -34,6 +34,9 @@ class App extends Component {
               <p> Bin Temp: <br/>
               {binAlarm.Temperature} °C</p>
             </div>
+            <div>
+              <p> Last Update: {binAlarm.Date}</p>
+            </div>
           </div>
         </div>
       );

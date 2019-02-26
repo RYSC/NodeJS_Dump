@@ -1,6 +1,7 @@
 .badBin {
     text-align: center;
     padding: 10px;
+    margin: 40px;
     background-color: rgb(245, 69, 69);
     color:white;
 }
@@ -8,7 +9,8 @@
 .goodBin{
     text-align: center;
     padding: 10px;
-    background-color: rgb(113, 238, 113);
+    margin: 40px;
+    background-color: rgb(101, 228, 101);
     color:white;
 }
 

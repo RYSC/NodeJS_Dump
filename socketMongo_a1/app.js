@@ -25,8 +25,9 @@ const getApiAndEmit = async socket => {
 const getAlarmAndEmit = async socket => {
   try {
     mongoUtil.getLatestAlarmDoc( function(binAlarm){
-      console.log("Emitting latest BinAlarm from mongo. BinLevel: "+binAlarm.BinLevel);
+      binAlarm.BinLevel = binAlarm.BinLevel.toFixed(2);
       socket.emit("FromMongo", binAlarm);
+      console.log("Emitting latest BinAlarm from mongo. BinLevel: "+binAlarm.BinLevel);
     });
   } catch (error) {
     console.error(`Error: ${error.code}`);

@@ -68,19 +68,13 @@ module.exports = {
     // db.collection.find().limit(1).sort({$natural:-1})
 
     getLatestAlarmDoc: function func1 ( callback) {
-        //var query = {DeviceID: pDeviceID};
-        MongoClient.connect(MongoDB_url, {useNewUrlParser: true}, function(err, initialisedDatabase) {
-            if (err) {
-                return console.dir(err);
-            }
-            CanaryDB = initialisedDatabase.db(dbName);
-            var collection = CanaryDB.collection('BinAlarmData');
-            collection.findOne({}, {sort:{$natural:-1}}).then(function(alarmDoc){
-                if(!alarmDoc)
-                    throw new Error('No record found.');
-                return callback(alarmDoc);
-            });
+        var collection = CanaryDB.collection('BinAlarmData'); 
+        collection.findOne({}, {sort:{$natural:-1}}).then(function(alarmDoc){
+            if(!alarmDoc)
+                throw new Error('No record found.');
+            return callback(alarmDoc);
         });
+       
     },
 
     // Inserts/Updates BinLim document in BinConfigInfo collection

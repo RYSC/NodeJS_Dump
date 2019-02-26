@@ -25,8 +25,8 @@ const getApiAndEmit = async socket => {
 const getAlarmAndEmit = async socket => {
   try {
     mongoUtil.getLatestAlarmDoc( function(binAlarm){
-      console.log("Bin level is: " + binAlarm.BinLevel);
-      socket.emit("FromMongo", binAlarm.BinLevel);
+      console.log("Emitting latest BinAlarm from mongo. BinLevel: "+binAlarm.BinLevel);
+      socket.emit("FromMongo", binAlarm);
     });
   } catch (error) {
     console.error(`Error: ${error.code}`);
@@ -37,12 +37,19 @@ const getAlarmAndEmit = async socket => {
 let interval;
 io.on("connection", socket => {
   console.log("New client connected");
-  if (interval) {
-    clearInterval(interval);
-  }
-  interval = setInterval(() => getAlarmAndEmit(socket), 10000);
-  socket.on("disconnect", () => {
-    console.log("Client disconnected");
+  
+  mongoUtil.connectToServer(function(err){
+    if (err) {
+      return console.dir(err);
+    }
+
+    if (interval) {
+      clearInterval(interval);
+    }
+    interval = setInterval(() => getAlarmAndEmit(socket), 10000);
+    socket.on("disconnect", () => {
+      console.log("Client disconnected");
+    });
   });
 });
 

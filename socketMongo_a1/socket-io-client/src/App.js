@@ -4,7 +4,7 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      response: false,
+      response: {},
       endpoint: "http://127.0.0.1:4001"
     };
   }
@@ -15,11 +15,13 @@ class App extends Component {
   }
   render() {
     const { response } = this.state;
+    var binAlarm = this.state.response;
     return (
       <div style={{ textAlign: "center" }}>
         {response
           ? <p>
-              The bin level is: {response} °F
+              The Bin Level is: {binAlarm.BinLevel} %
+              The Bin Temp is: {binAlarm.Temperature}
             </p>
           : <p>Loading...</p>}
       </div>

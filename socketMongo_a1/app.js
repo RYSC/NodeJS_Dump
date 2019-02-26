@@ -11,17 +11,6 @@ app.use(index);
 const server = http.createServer(app);
 const io = socketIo(server); // < Interesting!
 
-const getApiAndEmit = async socket => {
-    try {
-      const res = await axios.get(
-        "https://api.darksky.net/forecast/9fc17bc153413aea00691d5ff1f461cb/43.7695,11.2558"
-      ); // Getting the data from DarkSky
-      socket.emit("FromAPI", res.data.currently.temperature); // Emitting a new message. It will be consumed by the client
-    } catch (error) {
-      console.error(`Error: ${error.code}`);
-    }
-};
-
 const getAlarmAndEmit = async socket => {
   try {
     mongoUtil.getLatestAlarmDoc( function(binAlarm){
@@ -33,7 +22,6 @@ const getAlarmAndEmit = async socket => {
     console.error(`Error: ${error.code}`);
   }
 };
-
 
 let interval;
 io.on("connection", socket => {
@@ -53,7 +41,5 @@ io.on("connection", socket => {
     });
   });
 });
-
-
 
 server.listen(port, () => console.log(`Listening on port ${port}`));

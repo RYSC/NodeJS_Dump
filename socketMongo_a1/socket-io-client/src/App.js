@@ -35,9 +35,7 @@ class App extends Component {
           </div>
         </div>
       );
-    } 
-    
-    else {
+    } else {
       return (
         <div style={{ textAlign: "center" }}>
           <p>Loading...</p>
@@ -46,6 +44,5 @@ class App extends Component {
     }
   }
 }
-
 
 export default App;

@@ -23,15 +23,17 @@ class App extends Component {
 
     if (response) {
       return (
-        <div style={{ textAlign: "center"}}>
-          <h3> Bin level info: {binAlarm.DeviceID}</h3>
-          <div className = {binAlarm.FullAlarm ? "badBin" : "goodBin"}>
-            <p> Bin Level: <br/>
-            {binAlarm.BinLevel} % </p>
-          </div>
-          <div className = {binAlarm.FireAlarm ? "badBin" : "goodBin"}>
-            <p> Bin Temp: <br/>
-            {binAlarm.Temperature} °C</p>
+        <div className = "section">
+          <div className = "container" style={{ textAlign: "center"}}>
+            <h3> Bin level info: {binAlarm.DeviceID}</h3>
+            <div className = {binAlarm.FullAlarm ? "badBin" : "goodBin"}>
+              <p> Bin Level: <br/>
+              {binAlarm.BinLevel} % </p>
+            </div>
+            <div className = {binAlarm.FireAlarm ? "badBin" : "goodBin"}>
+              <p> Bin Temp: <br/>
+              {binAlarm.Temperature} °C</p>
+            </div>
           </div>
         </div>
       );

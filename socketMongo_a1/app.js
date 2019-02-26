@@ -35,6 +35,7 @@ io.on("connection", socket => {
     if (interval) {
       clearInterval(interval);
     }
+    //getAlarmAndEmit(socket);
     interval = setInterval(() => getAlarmAndEmit(socket), 10000);
     socket.on("disconnect", () => {
       console.log("Client disconnected");

@@ -10,6 +10,7 @@ var fs = require('fs');
 
 // MongoUtil module for connecting to Bin Config database
 var mongoUtil = require("./mongoUtil");
+var notif = require("./notif")
 
 
 //-----------------------------------------------------------------------------
@@ -101,6 +102,7 @@ mongoUtil.connectToServer(function(err){
             if (binPacket.FullAlarm){
                 console.log("[!] ALARM: BIN IS AT CAPACITY [!]");
                 alarmBinMsg += "[!] BIN IS FULL [!]";
+                notif.sendMail();
             }
         
             // Alarm actions: Fire

@@ -51,18 +51,14 @@ module.exports = {
     // Gives Bin document for callback function, matching parsed bin ID
     getBinLimDocument: function func1 (pDeviceID, callback) {
         var query = {DeviceID: pDeviceID};
-        MongoClient.connect(MongoDB_url, {useNewUrlParser: true}, function(err, initialisedDatabase) {
-            if (err) {
-                return console.dir(err);
-            }
-            CanaryDB = initialisedDatabase.db(dbName);
-            var collection = CanaryDB.collection('BinConfigInfo');
-            collection.findOne(query).then(function(binDoc){
-                if(!binDoc)
-                    throw new Error('No record found.');
-                return callback(binDoc);
-            });
+       
+        var collection = CanaryDB.collection('BinConfigInfo');
+        collection.findOne(query).then(function(binDoc){
+            if(!binDoc)
+                throw new Error('No record found.');
+            return callback(binDoc);
         });
+        
     },
 
     // Inserts/Updates BinLim document in BinConfigInfo collection
@@ -74,6 +70,7 @@ module.exports = {
     // Inserts Bin Alarm data to bin alarm collection
     insertAlarmData: function(binAlarmObject) {
         CanaryDB.collection('BinAlarmData').insertOne(binAlarmObject);
+        console.log("Inserted BinAlarm data to database");
     },
 
 }

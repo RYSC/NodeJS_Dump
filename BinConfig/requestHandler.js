@@ -45,6 +45,29 @@ function updateBinInfo(response, postData) {
     console.log("request handler 'updateConfig' was called.");
     
     // Construct an html form
+    var menu = '<html>'+
+        '<head>'+ 
+        '<style>' +
+        'ul {list-style-type: none;margin: 0;padding: 0;overflow: hidden;background-color: rgb(187, 199, 221);}' +
+        'li {float: left;}' + 
+        'li a {display: inline-block;color: white;text-align: center;padding: 14px 16px;text-decoration: none;}' +
+        'li a:hover {background-color: rgb(165, 178, 202);}' + 
+        '.active {background-color: rgb(138, 162, 206);}' +
+        '</style>' +
+        '<meta http-equiv="Content-Type" content="text/html; '+
+        'charset=UTF-8" />'+
+        '</head>'+
+        '<body>'+
+        '<ul>' +
+              '<li><a href = "https://www.google.com"> Google Link </a></li>' +
+              '<li><a href = "/binStatus" class = "active"> Bin Status</a></li>' +
+              '<li><a href = "http://149.28.178.221:8888/updateBinInfo" > Update Bin Configuration</a></li>' +
+        '</ul>' + 
+        '<br />' +
+        '<br />' +
+        '</body>'+
+        '</html>';
+
     var body = '<html>'+
         '<head>'+
         '<meta http-equiv="Content-Type" content="text/html; '+
@@ -65,7 +88,9 @@ function updateBinInfo(response, postData) {
         '</body>'+
         '</html>';
 
+
     response.writeHead(200, {"Content-Type": "text/html"});
+    response.write(menu);
     response.write(body);
     response.end();
     

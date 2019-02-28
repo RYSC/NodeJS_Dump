@@ -47,21 +47,20 @@ function updateBinInfo(response, postData) {
     // Construct an html form
     var menu = '<html>'+
         '<head>'+ 
-        '<style>' +
-        'ul {list-style-type: none;margin: 0;padding: 0;overflow: hidden;background-color: rgb(187, 199, 221);}' +
-        'li {float: left;}' + 
-        'li a {display: inline-block;color: white;text-align: center;padding: 14px 16px;text-decoration: none;}' +
-        'li a:hover {background-color: rgb(165, 178, 202);}' + 
-        '.active {background-color: rgb(138, 162, 206);}' +
-        '</style>' +
         '<meta http-equiv="Content-Type" content="text/html; '+
         'charset=UTF-8" />'+
         '</head>'+
         '<body>'+
+        '<style>' +
+        'ul {list-style-type: none;margin: 0;padding: 0;overflow: hidden;background-color: rgb(186, 193, 207);}' +
+        'li {float: left;}' + 
+        'li a {display: inline-block;color: white;text-align: center;font-family:Verdana;font-size: 14px;padding: 14px 16px;text-decoration: none;}' +
+        'li a:hover {background-color: rgb(165, 178, 202);}' + 
+        '.active {background-color: rgb(138, 150, 170);}' +
+        '</style>' +
         '<ul>' +
-              '<li><a href = "https://www.google.com"> Google Link </a></li>' +
-              '<li><a href = "/binStatus" class = "active"> Bin Status</a></li>' +
-              '<li><a href = "http://149.28.178.221:8888/updateBinInfo" > Update Bin Configuration</a></li>' +
+              '<li><a href = "http://149.28.178.221:3000/binStatus" > Bin Status</a></li>' +
+              '<li><a href = "http://149.28.178.221:8888/updateBinInfo" class = "active"> Update Bin Configuration</a></li>' +
         '</ul>' + 
         '<br />' +
         '<br />' +
@@ -74,17 +73,29 @@ function updateBinInfo(response, postData) {
         'charset=UTF-8" />'+
         '</head>'+
         '<body>'+
-        '<form action="/uploadToDB" method="post">'+
-        'DeviceID:<br>'+                                    
+        '<style>' +
+        '*{ font-family: Verdana; font-size: 13px; }' +
+        '</style>' +
+        //'<div align = "center" style="border:3px solid black; display: flex; justify-content:center; width: 100%; max-width: 300px;text-align: center ">' +
+        //'<div align = "center" style="border:2px solid black; width: 100%;max-width: 400px; display: flex; flex-direction: column; justify-content: center; margin-left= 35%">' +
+        //'<div align = "center" style="border:2px solid black; max-width: 400px; display: flex; flex-direction: column; justify-content: center; margin-left= 35%">' +
+        '<div align = "center" >' +
+        '<h2 style="color: rgb(91, 97, 110)"> Bin Info Form </h2>' +
+        '<form action="/uploadToDB" method="post" style= "text-align: center; padding: 20px; display: inline-block; border: 3px solid rgb(138, 150, 170); border-radius: 3px;  ">'+
+        'Device ID:<br>'+                                    
         '<input type="text" name="inpDeviceID"><br>'+           // DeviceID Input
+        '<br/>' +
         'Bin Depth:<br>'+                                   
         '<input type="number" name="inpBinDepth"><br>'+         // Bin Depth Input
+        '<br/>' +
         'Temperature Limit:<br>'+
         '<input type="number" name="inpTeLimit"><br>'+          // Temp Limit Input
+        '<br/>' +
         'Bin Level Limit:<br>'+
         '<input type="number" name="inpLeLimit"><br><br>'+      // Bin Level Input
         '<input type="submit" value="Submit Info" />'+
         '</form>'+
+        '</div>' +
         '</body>'+
         '</html>';
 

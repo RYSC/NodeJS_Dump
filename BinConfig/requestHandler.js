@@ -76,18 +76,18 @@ function updateBinInfo(response, postData) {
         '<style>' +
         '*{ font-family: Verdana; font-size: 13px; }' +
         '</style>' +
-        '<div align = "center" >' +
-        '<h2 style="color: rgb(91, 97, 110)"> Bin Info Form </h2>' +
-        '<form action="/uploadToDB" method="post" style= "text-align: center; padding: 20px; display: inline-block; border: 3px solid rgb(138, 150, 170); border-radius: 3px;  ">'+
+        '<h2 style="display:flex; justify-content:center; color: rgb(91, 97, 110)"> Bin Info Form </h2>' +
+        '<div style = "display:flex; justify-content:center" >' +
+        '<form action="/uploadToDB" method="post" align = "center" style= "text-align: center; padding: 20px; display: inline-block; border: 3px solid rgb(138, 150, 170); border-radius: 3px; width: 100%; max-width: 200px; display: flex; flex-direction:column; justify-content:center ">'+
         'Device ID:<br>'+                                    
         '<input type="text" name="inpDeviceID"><br>'+           // DeviceID Input
-        '<br/>' +
+        //'<br/>' +
         'Bin Depth:<br>'+                                   
         '<input type="number" name="inpBinDepth"><br>'+         // Bin Depth Input
-        '<br/>' +
+        //'<br/>' +
         'Temperature Limit:<br>'+
         '<input type="number" name="inpTeLimit"><br>'+          // Temp Limit Input
-        '<br/>' +
+        //'<br/>' +
         'Bin Level Limit:<br>'+
         '<input type="number" name="inpLeLimit"><br><br>'+      // Bin Level Input
         '<input type="submit" value="Submit Info" />'+

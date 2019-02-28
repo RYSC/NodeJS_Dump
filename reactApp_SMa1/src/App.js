@@ -8,7 +8,8 @@ class App extends Component {
     super();
     this.state = {
       response: {},
-      endpoint: "http://127.0.0.1:4001"
+      //endpoint: "http://127.0.0.1:4001"
+      endpoint: "http://149.28.178.221:4001"
     };
   }
   componentDidMount() {

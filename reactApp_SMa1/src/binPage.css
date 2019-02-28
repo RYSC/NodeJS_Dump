@@ -42,7 +42,7 @@ ul {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: rgb(187, 199, 221);
+    background-color: rgb(186, 193, 207);
   }
   
   li {
@@ -62,5 +62,5 @@ ul {
   } 
 
 .active {
-    background-color: rgb(138, 162, 206);
+    background-color: rgb(138, 150, 170);
 }

@@ -26,9 +26,11 @@ class App extends Component {
       return (
         <div>
           <BinMenu />
+          <br/>
+          <br/>
           <div className = "section">
             <div className = "container" style={{ textAlign: "center"}}>
-              <h3> Bin level info: {binAlarm.DeviceID}</h3>
+              <h3> Bin Level Info: {binAlarm.DeviceID}</h3>
               <div className = {binAlarm.FullAlarm ? "badBin" : "goodBin"}>
                 <p> Bin Level: <br/>
                 {binAlarm.BinLevel} % </p>
@@ -38,10 +40,7 @@ class App extends Component {
                 {binAlarm.Temperature} °C</p>
               </div>
               <div>
-                <p> Last Update: {binAlarm.Date}</p>
-              </div>
-              <div>
-                <a href="https://www.google.com"> Google Link </a>
+                 Last Update: {binAlarm.Date}
               </div>
             </div>
           </div>

@@ -44,7 +44,7 @@ function addToObject(object, pairName, value, isNum){
 function updateBinInfo(response, postData) {
     console.log("request handler 'updateConfig' was called.");
     
-    // Construct an html form
+    // Construct a page menu
     var menu = '<html>'+
         '<head>'+ 
         '<meta http-equiv="Content-Type" content="text/html; '+
@@ -66,7 +66,7 @@ function updateBinInfo(response, postData) {
         '<br />' +
         '</body>'+
         '</html>';
-
+    // Construct an html form
     var body = '<html>'+
         '<head>'+
         '<meta http-equiv="Content-Type" content="text/html; '+
@@ -76,9 +76,6 @@ function updateBinInfo(response, postData) {
         '<style>' +
         '*{ font-family: Verdana; font-size: 13px; }' +
         '</style>' +
-        //'<div align = "center" style="border:3px solid black; display: flex; justify-content:center; width: 100%; max-width: 300px;text-align: center ">' +
-        //'<div align = "center" style="border:2px solid black; width: 100%;max-width: 400px; display: flex; flex-direction: column; justify-content: center; margin-left= 35%">' +
-        //'<div align = "center" style="border:2px solid black; max-width: 400px; display: flex; flex-direction: column; justify-content: center; margin-left= 35%">' +
         '<div align = "center" >' +
         '<h2 style="color: rgb(91, 97, 110)"> Bin Info Form </h2>' +
         '<form action="/uploadToDB" method="post" style= "text-align: center; padding: 20px; display: inline-block; border: 3px solid rgb(138, 150, 170); border-radius: 3px;  ">'+
